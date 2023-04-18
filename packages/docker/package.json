@@ -1,0 +1,12 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run start:docker",
+    "start:docker": "docker-compose up -d"
+  },
+  "author": "",
+  "license": "ISC"
+}

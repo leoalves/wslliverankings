@@ -1,0 +1,83 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Athlete {
+  id        Int      @default(autoincrement()) @id  
+  wslId     Int?
+  wslUrl    String?
+  name      String
+  twitterHandle String?
+  instagramHandle String?
+  countryId Int
+  country   Country  @relation(fields: [countryId], references: [id])
+  tourRankings  TourRanking[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  eventRankings    EventRanking[]
+}
+
+model TourRanking {
+  id             Int      @default(autoincrement()) @id
+  athleteId      Int
+  ranking        Int
+  points         Int
+  previousPosition Int
+  currentPosition       Int
+  lastEventId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  athlete        Athlete @relation(fields: [athleteId], references: [id])
+  tourId         Int
+  tour           Tour    @relation(fields: [tourId], references: [id])
+}
+
+model EventRanking {
+  id             Int      @default(autoincrement()) @id
+  athleteId      Int
+  ranking        Int
+  points         Int
+  eventId        Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  athlete        Athlete @relation(fields: [athleteId], references: [id])  
+  event          Event   @relation(fields: [eventId], references: [id])
+
+}
+
+model Tour {
+  id        Int      @default(autoincrement()) @id
+  name      String
+  events    Event[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rankings  TourRanking[]
+}
+
+model Event {
+  id         Int      @default(autoincrement()) @id
+  order      Int  
+  tourId     Int
+  name       String
+  isComplete Boolean @default(false)
+  tour       Tour     @relation(fields: [tourId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  rankings   EventRanking[]
+}
+
+model Country {
+  id        Int      @default(autoincrement()) @id
+  name      String
+  code      String
+  flag      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  athletes  Athlete[]
+}

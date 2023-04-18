@@ -1,0 +1,28 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "dev": "npm run wait-on:docker && npm run db:push",
+    "wait-on:docker": "wait-on -d 5000 tcp:54322",
+    "generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:pull": "prisma db pull",
+    "db:studio": "prisma studio"
+  },
+  "devDependencies": {
+    "prisma": "^4.12.0",
+    "ts-node": "^10.9.1"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.12.0"
+  }
+}
